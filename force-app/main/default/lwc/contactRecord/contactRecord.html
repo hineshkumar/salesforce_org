@@ -1,0 +1,101 @@
+<template>
+    <lightning-card title="Contact Form" icon-name="standard:contact" class="contact-form">
+        <div class="slds-p-around_medium">
+            <lightning-record-edit-form object-api-name="Contact" onsuccess={handleSuccess} class="custom-form">
+                <div class="slds-grid slds-wrap">
+                    <!-- Form fields as shown in your original code -->
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:user" alternative-text="First Name" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="FirstName" value={firstName}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:user" alternative-text="Last Name" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="LastName" value={lastName}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:email" alternative-text="Email" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="Email" value={email}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:call" alternative-text="Phone" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="Phone" value={phone}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:address" alternative-text="Mailing Street" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="MailingStreet" value={mailingStreet}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:address" alternative-text="Mailing City" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="MailingCity" value={mailingCity}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:address" alternative-text="Mailing State" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="MailingState" value={mailingState}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:address" alternative-text="Mailing Postal Code" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="MailingPostalCode" value={mailingPostalCode}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                        <lightning-layout>
+                            <lightning-layout-item size="1">
+                                <lightning-icon icon-name="standard:address" alternative-text="Mailing Country" size="small"></lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="11">
+                                <lightning-input-field field-name="MailingCountry" value={mailingCountry}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+    </lightning-card>
+</template>
