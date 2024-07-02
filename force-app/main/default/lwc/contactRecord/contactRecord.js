@@ -1,6 +1,7 @@
 import { LightningElement, api, } from 'lwc';
 import {
-    FlowNavigationNextEvent
+    FlowNavigationNextEvent,
+    FlowNavigationFinishEvent
 } from 'lightning/flowSupport';
 
 export default class ContactForm extends LightningElement {

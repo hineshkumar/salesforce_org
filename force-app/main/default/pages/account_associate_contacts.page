@@ -1,0 +1,28 @@
+<apex:page title="Account Associate Page" controller="accountController">
+<apex:form>
+        <apex:pageBlock title="Account Section">
+            <apex:pageBlockSection>
+            <apex:selectList value="{!selectedAccountId}" size="1" >
+                <apex:selectOptions value="{!accountNames}"/>
+                <apex:actionSupport event="onchange" reRender="contactsTable" action="{!fetchContacts}"/>
+            </apex:selectList>
+        </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Associated Contacts" id="contactsTable">
+            <apex:pageBlockSection>
+            <apex:pageBlockTable  value="{!associatedContacts}" var="contact">
+                <apex:column value="{!contact.FirstName}"/>
+                <apex:column value="{!contact.LastName}"/>
+                <apex:column value="{!contact.Email}"/>
+                <apex:column value="{!contact.Phone}"/>
+                <apex:column value="{!contact.Birthdate}"/>
+                <apex:column headerValue="Actions">
+                    <button>Delete</button>
+                    <button>Update</button>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
