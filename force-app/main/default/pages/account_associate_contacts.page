@@ -1,28 +1,80 @@
 <apex:page title="Account Associate Page" controller="accountController">
-<apex:form>
+    <apex:stylesheet value="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+    <apex:includeScript value="https://code.jquery.com/jquery-3.5.1.slim.min.js" />
+    <apex:includeScript value="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" />
+    <apex:includeScript value="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" />
+
+    <apex:form>
         <apex:pageBlock title="Account Section">
             <apex:pageBlockSection>
-            <apex:selectList value="{!selectedAccountId}" size="1" >
-                <apex:selectOptions value="{!accountNames}"/>
-                <apex:actionSupport event="onchange" reRender="contactsTable" action="{!fetchContacts}"/>
-            </apex:selectList>
-        </apex:pageBlockSection>
+                <apex:selectList value="{!selectedAccountId}" size="1">
+                    <apex:selectOptions value="{!accountNames}" />
+                    <apex:actionSupport event="onchange" reRender="contactsTable" action="{!fetchContacts}" />
+                </apex:selectList>
+            </apex:pageBlockSection>
         </apex:pageBlock>
-        
+
         <apex:pageBlock title="Associated Contacts" id="contactsTable">
             <apex:pageBlockSection>
-            <apex:pageBlockTable  value="{!associatedContacts}" var="contact">
-                <apex:column value="{!contact.FirstName}"/>
-                <apex:column value="{!contact.LastName}"/>
-                <apex:column value="{!contact.Email}"/>
-                <apex:column value="{!contact.Phone}"/>
-                <apex:column value="{!contact.Birthdate}"/>
-                <apex:column headerValue="Actions">
-                    <button>Delete</button>
-                    <button>Update</button>
-                </apex:column>
-            </apex:pageBlockTable>
-        </apex:pageBlockSection>
+                <apex:pageBlockTable value="{!associatedContacts}" var="contact">
+                    <apex:column value="{!contact.FirstName}" />
+                    <apex:column value="{!contact.LastName}" />
+                    <apex:column value="{!contact.Email}" />
+                    <apex:column value="{!contact.Phone}" />
+                    <apex:column value="{!contact.Birthdate}" />
+                    <apex:column headerValue="Actions">
+                        <apex:commandButton value="Delete" />
+                        <apex:commandButton value="Edit" onclick="openModal(); return false;" />
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
         </apex:pageBlock>
     </apex:form>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Contact</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <apex:form id="editForm">
+                        <apex:pageBlock>
+                            <apex:pageBlockSection>
+                                <apex:inputField value="{!selectedContact.FirstName}" styleClass="form-control" />
+                                <apex:inputField value="{!selectedContact.LastName}" styleClass="form-control" />
+                                <apex:inputField value="{!selectedContact.Email}" styleClass="form-control" />
+                                <apex:inputField value="{!selectedContact.Phone}" styleClass="form-control" />
+                                <apex:inputField value="{!selectedContact.Birthdate}" styleClass="form-control" />
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </apex:form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveContact();">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            $('#editModal').modal('show');
+        }
+
+        function closeModal() {
+            $('#editModal').modal('hide');
+        }
+
+        function saveContact() {
+
+            document.getElementById('editForm:editBtn').click();
+            $('#editModal').modal('hide');
+        }
+    </script>
+
 </apex:page>
