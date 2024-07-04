@@ -1,0 +1,60 @@
+<apex:page controller="donationController">
+    <style>
+        .container {
+            /* display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; */
+        }
+        .div-donation {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+            margin-left: 30px;
+            margin-right: 10px;
+            width: 95%;
+            border-radius: 10px;
+            height: 100px;
+            background-color: rgb(255, 248, 248);
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .img-logo {
+            width: 75px;
+            height: 75px;
+            margin-right: 20px;
+        }
+        .div-donation h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+        hr{
+            border: 1px solid rgb(75, 229, 250);
+        }
+        .donation-info{
+            margin-top: 50px;
+            padding-left: 30px;
+            padding-right:20px;
+        }
+        h2{
+            font-size: 20px;
+            font-weight: normal;
+        }
+    </style>
+    
+    <div class="container">
+        <div class="div-donation">
+            <img src="{!URLFOR($Resource.Donation_Logo)}" class="img-logo" alt="Company Logo" />
+            <h2>Donation</h2>
+        </div>
+        <div class="donation-info">
+            <h2>Donation Information</h2>
+            <div>
+                <apex:outputText>
+
+                </apex:outputText>
+            </div>
+            <hr/>
+        </div>
+    </div>
+</apex:page>

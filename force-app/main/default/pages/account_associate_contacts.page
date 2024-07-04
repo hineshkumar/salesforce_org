@@ -14,23 +14,30 @@
                 </apex:selectList>
             </apex:pageBlockSection>
         </apex:pageBlock>
-
+        <!-- <apex:outputPanel rendered="{!showConPanel}"> -->
         <apex:pageBlock title="Associated Contacts" id="contactsTable">
-            <apex:pageBlockSection>
+            <apex:pageBlockSection> 
                 <apex:pageBlockTable value="{!associatedContacts}" var="contact">
                     <apex:column value="{!contact.FirstName}" />
                     <apex:column value="{!contact.LastName}" />
                     <apex:column value="{!contact.Email}" />
                     <apex:column value="{!contact.Phone}" />
-                    <apex:column value="{!contact.Birthdate}" />
                     <apex:column headerValue="Actions">
-                        <apex:commandButton value="Delete" />
-                        <apex:commandButton value="Edit" onclick="openModal(); return false;" />
+                        <apex:commandButton value="Delete" action="{!deleteContact}" reRender="contactsTable">
+                            <apex:param name="contactId" value="{!contact.Id}" assignTo="{!selectedContact.Id}" />
+                        </apex:commandButton>
+                        <apex:commandButton value="Edit" onclick="setSelectedContact('{!contact.Id}'); return false;" />
                     </apex:column>
                 </apex:pageBlockTable>
             </apex:pageBlockSection>
         </apex:pageBlock>
+    <!-- </apex:outputPanel> -->
+
+        <apex:actionFunction name="setSelectedContact" action="{!setSelectedContact}" reRender="editForm" oncomplete="openModal();">
+            <apex:param name="contactId" value="" assignTo="{!selectedContact.Id}" />
+        </apex:actionFunction>
     </apex:form>
+
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -44,18 +51,19 @@
                     <apex:form id="editForm">
                         <apex:pageBlock>
                             <apex:pageBlockSection>
-                                <apex:inputField value="{!selectedContact.FirstName}" styleClass="form-control" />
-                                <apex:inputField value="{!selectedContact.LastName}" styleClass="form-control" />
-                                <apex:inputField value="{!selectedContact.Email}" styleClass="form-control" />
-                                <apex:inputField value="{!selectedContact.Phone}" styleClass="form-control" />
-                                <apex:inputField value="{!selectedContact.Birthdate}" styleClass="form-control" />
+                               
+                                <apex:inputText value="{!fname}" label="First Name" styleClass="form-control" />
+                                <apex:inputText value="{!lname}" label="Last Name" styleClass="form-control" />
+                                <apex:inputText value="{!email}" label="Email" styleClass="form-control" />
+                                <apex:inputText value="{!phone}" label="phone" styleClass="form-control" />
                             </apex:pageBlockSection>
                         </apex:pageBlock>
+                      <apex:commandButton action="{!updateContact}" value="Update"/>
                     </apex:form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveContact();">Update</button>
+                    <button type="button" id="btn-delete" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" id="btn-edit" class="btn btn-primary" onclick="saveContact();">Update</button> -->
                 </div>
             </div>
         </div>
@@ -71,10 +79,8 @@
         }
 
         function saveContact() {
-
-            document.getElementById('editForm:editBtn').click();
+            document.getElementById('editForm:hiddenEditBtn').click();
             $('#editModal').modal('hide');
         }
     </script>
-
 </apex:page>
