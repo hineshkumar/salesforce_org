@@ -2,7 +2,6 @@
     <style>
         .container {
             height: 100vh;
-            overflow-y: auto;
             padding: 20px;
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -69,7 +68,7 @@
         }
         .select-container {
             width: 100%;
-            padding-top: 10px;
+            margin-top: 10px;
         }
         .select-container .slds-form-element__label {
             font-size: 13px;
@@ -84,15 +83,85 @@
             font-size: 13px;
             background-color: #f8f8f8;
         }
+        .select-container-child {
+            margin-top: 20px;
+            width: 100%;
+        }
+        .select-container-child select {
+            width: 20%;
+            padding-top: 30px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 13px;
+            background-color: #f8f8f8;
+        }
+        .radio-btn {
+            margin-top: 10px;
+        }
+        .donation-amount-section {
+            background-color: #f2f2f2;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .donation-amount-section .slds-form-element__label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .donation-amount-section .slds-form-element__control {
+            margin-top: 10px;
+        }
+        .donation-amount-section input,
+        .donation-amount-section textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .submitBtn {
+        background-color: rgb(34, 134, 221);
+        color: white;
+        font-size: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .submitBtn:hover {
+        background-color: rgb(24, 114, 201); 
+    }
+    .btnDiv{
+      margin-left: 20px;
+    }
     </style>
 
-    <div class="container">
-        <div class="div-donation">
-            <img src="{!URLFOR($Resource.Donation_Logo)}" class="img-logo" alt="Company Logo" />
-            <h2>Donation</h2>
-        </div>
+    <script>
+        function handleRadioChange() {
+            var oneTimePanel = document.getElementById('oneTimePanel');
+            var recurringPanel = document.getElementById('recurringPanel');
+            var oneTimeRadio = document.getElementById('oneTimeRadio');
+            if (oneTimeRadio.checked) {
+                oneTimePanel.style.display = 'block';
+                recurringPanel.style.display = 'none';
+            } else {
+                oneTimePanel.style.display = 'none';
+                recurringPanel.style.display = 'block';
+            }
+        }
+    </script>
+
+<div class="container">
+    <div class="div-donation">
+        <img src="{!URLFOR($Resource.Donation_Logo)}" class="img-logo" alt="Company Logo" />
+        <h2>Donation</h2>
+    </div>
+    <apex:form id="mainForm">
         <div class="donation-info">
-            <h2>Donation Information</h2>
+            <h2>Donor Information</h2>
             <hr />
             <div class="donation-item">
                 <div class="slds-grid slds-gutters">
@@ -140,49 +209,124 @@
                 <div class="slds-form-element">
                     <label class="slds-form-element__label">Select donation type: <span class="required">*</span></label>
                     <div class="slds-form-element__control">
-                        <apex:form id="frm">
-                            <apex:selectList id="pl1" value="{!selectedCampaign}" size="1" onchange="showSecondPicklist()">
-                                <apex:selectOptions value="{!campaignOptions}"  />
-                            </apex:selectList>
-                        </apex:form>
+                        <apex:selectList id="pl1" value="{!selectedCampaign}" size="1">
+                            <apex:selectOptions value="{!campaignOptions}" />
+                            <apex:actionSupport event="onchange" reRender="childData" action="{!fetchChildCampaign}" />
+                        </apex:selectList>
                     </div>
                 </div>
             </div>
 
-            <div class="select-container">
-                <div id="div1" class="slds-form-element"  style="display:none">
-                    <label class="slds-form-element__label">Donation To: <span class="required">*</span></label>
-                    <div class="slds-form-element__control">
-                        <apex:form>
-                            <apex:selectList value="{!selectedCampaign}" size="1" >
-                                <apex:selectOptions value="{!campaignOptions}" />
+            <div class="select-container-child" id="childData">
+                <apex:outputPanel id="childData">
+                    <div id="div1" class="slds-form-element" style="display:{!IF(showChildCampaign, 'block', 'none')}">
+                        <label class="slds-form-element__label">Donation To: <span class="required">*</span></label>
+                        <div class="slds-form-element__control">
+                            <apex:selectList value="{!selectedChildCampaign}" size="1">
+                                <apex:selectOptions value="{!childCampaignOptions}" />
                             </apex:selectList>
-                        </apex:form>
+                        </div>
                     </div>
-                </div>
+                </apex:outputPanel>
             </div>
-       
-
         </div>
+        <div class="donation-info">
+            <h2>Donation Information</h2>
+            <hr/>
+            <div class="slds-form-element">
+                <div class="slds-form-element__label">Choose Frequency of Gift <span class="required">*</span></div>
+                <div class="slds-form-element__control">
+                    <div class="radio-btn">
+                        <input type="radio" id="oneTimeRadio" name="giftFrequency" value="oneTime" onclick="handleRadioChange()"/>
+                        <label for="oneTime">One Time Gift</label>
+                        <input type="radio" id="recurringRadio" name="giftFrequency" value="recurring" onclick="handleRadioChange()"/>
+                        <label for="recurring">Recurring Gift</label>
+                    </div>
+                </div>
+            </div>
+            <div id="oneTimePanel" class="donation-amount-section" style="display:none;">
+                <label class="slds-form-element__label">Enter One-Time Amount <span class="required">*</span></label>
+                <div class="slds-form-element__control">
+                    <apex:inputText/>
+                </div>
+                <label class="slds-form-element__label">Comment</label>
+                <div class="slds-form-element__control">
+                    <apex:inputTextarea/>
+                </div>
+            </div>
+            <div id="recurringPanel" class="donation-amount-section" style="display:none;">
+                <label class="slds-form-element__label">Enter Recurring Amount <span class="required">*</span></label>
+                <div class="slds-form-element__control">
+                    <apex:inputText/>
+                </div>
+                <label class="slds-form-element__label">Recurring Frequency <span class="required">*</span></label>
+                <div class="slds-form-element__control">
+                    <apex:selectList size="1">
+                        <apex:selectOption itemValue="Monthly" itemLabel="Monthly"/>
+                        <apex:selectOption itemValue="Quarterly" itemLabel="Quarterly"/>
+                        <apex:selectOption itemValue="Yearly" itemLabel="Yearly"/>
+                    </apex:selectList>
+                </div>
+                <label class="slds-form-element__label">No. of Gifts <span class="required">*</span></label>
+                <div class="slds-form-element__control">
+                    <apex:selectList size="1">
+                        <apex:selectOption itemValue="1" itemLabel="1"/>
+                        <apex:selectOption itemValue="2" itemLabel="2"/>
+                        <apex:selectOption itemValue="3" itemLabel="3"/>
+                        <apex:selectOption itemValue="4" itemLabel="4"/>
+                        <apex:selectOption itemValue="5" itemLabel="5"/>
+                        <apex:selectOption itemValue="6" itemLabel="6"/>
+                    </apex:selectList>
+                </div>
+                <label class="slds-form-element__label">Comment</label>
+                <div class="slds-form-element__control">
+                    <apex:inputTextarea/>
+                </div>
+            </div>
+        </div>
+        <div class="donation-info">
+            <h2>Enter Payment Information</h2>
+            <hr/>
+            <label class="slds-form-element__label">Payment Method <span class="required">*</span></label>
+            <div class="slds-form-element__control">
+                <apex:selectList size="1">
+                    <apex:selectOption itemValue="Cash" itemLabel="Cash"/>
+                    <apex:selectOption itemValue="CreditCard" itemLabel="Credit Card"/>
+                    <apex:selectOption itemValue="ECash" itemLabel="E Cash"/>
+                </apex:selectList>
+            </div>
 
-    </div>
-    <script>
-
-function showSecondPicklist() {
-            var donationtypeValye = document.getElementById('{!$Component.frm.pl1}').value;
-            console.log('::donationtypeValye '+donationtypeValye);
-            
-            var secondPicklist = document.getElementById('div1');
-
-            if(donationtypeValye == 'Choose a Donation Type'){
-                secondPicklist.style.display = 'none';
-
-            }else{
-                secondPicklist.style.display = 'block';
-
-            }
-        }
-
-
-    </script>
+            <div class="donation-amount-section">
+                <label class="slds-form-element__label">Credit Card</label>
+                <div class="slds-form-element__control">
+                    <apex:inputText/>
+                </div>
+                <label class="slds-form-element__label">Expiry Month</label>
+                <div class="slds-form-element__control">
+                    <apex:selectList size="1">
+                        <apex:selectOption itemValue="1" itemLabel="1"/>
+                        <apex:selectOption itemValue="2" itemLabel="2"/>
+                        <apex:selectOption itemValue="3" itemLabel="3"/>
+                    </apex:selectList>
+                </div>
+                <label class="slds-form-element__label">Expiry Year</label>
+                <div class="slds-form-element__control">
+                    <apex:selectList size="1">
+                        <apex:selectOption itemValue="2022" itemLabel="2022"/>
+                        <apex:selectOption itemValue="2023" itemLabel="2023"/>
+                        <apex:selectOption itemValue="2024" itemLabel="2024"/>
+                        <apex:selectOption itemValue="2025" itemLabel="2025"/>
+                    </apex:selectList>
+                </div>
+                <label class="slds-form-element__label">Comment</label>
+                <div class="slds-form-element__control">
+                    <apex:inputTextarea/>
+                </div>
+            </div>
+        </div>
+        <div class="btnDiv">
+            <apex:commandButton value="Donate Now" action="{!AddDonation}"></apex:commandButton>
+        </div>
+    </apex:form>
+</div>
 </apex:page>
